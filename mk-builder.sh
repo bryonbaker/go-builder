@@ -9,8 +9,8 @@ set -e
 
 # Function to print usage and exit
 usage() {
-    echo "Usage: buildah unshare ./mk-builder.sh <image name:tag>"
-    echo "Example: buildah unshare ./mk-builder.sh quay.io/username/go-builder:1.23.4"
+    echo "Usage: buildah unshare ./mk-builder.sh <golang release filename> <golang release url> <image name:tag>"
+    echo "Example: buildah unshare ./mk-builder.sh go1.23.4.linux-amd64.tar.gz https://go.dev/dl/go1.23.4.linux-amd64.tar.gz quay.io/username/go-builder:1.23.4"
     exit 1
 }
 
@@ -19,14 +19,12 @@ if [ -z "$1" ]; then
     usage
 fi
 
-IMAGE_NAME="$1"
+GO_FILE="$1"
+GOLANG_URL="$2"
+IMAGE_NAME="$3"
 
 echo "Building golang buildah image: $IMAGE_NAME"
-
-export GO_VERSION=1.23.4
-export GO_FILE=go${GO_VERSION}.linux-amd64.tar.gz
-export GOLANG_URL=https://go.dev/dl/${GO_FILE}
-echo $GOLANG_URL
+echo "Golang release: $GOLANG_URL"
 
 container=$(buildah from registry.access.redhat.com/ubi8/ubi-minimal:latest)
 mnt=$(buildah mount $container)

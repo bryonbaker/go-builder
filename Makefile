@@ -11,7 +11,7 @@ TAG := $(GO_VERSION)
 all: build push
 
 build:
-	buildah unshare ./mk-builder.sh $(IMAGE_NAME):$(TAG)
+	buildah unshare ./mk-builder.sh $(GO_FILE) $(GOLANG_URL) $(IMAGE_NAME):$(TAG)
 
 push:
 	podman push $(IMAGE_NAME):$(TAG)
