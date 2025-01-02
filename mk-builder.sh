@@ -38,8 +38,6 @@ rm -rf $mnt/usr/local/go && \
 tar -C $mnt/usr/local -xzf $mnt/tmp/$GO_FILE && \
 rm $mnt/tmp/$GO_FILE
 
-# echo "PATH=\$PATH:/usr/local/go/bin" >> $mnt/root/.bashrc
-
 # Set Go environment variables
 echo "Setting environment variables..."
 buildah config --env PATH=/usr/local/go/bin:$PATH $container
