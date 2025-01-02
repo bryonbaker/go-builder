@@ -38,7 +38,17 @@ rm -rf $mnt/usr/local/go && \
 tar -C $mnt/usr/local -xzf $mnt/tmp/$GO_FILE && \
 rm $mnt/tmp/$GO_FILE
 
-echo "PATH=\$PATH:/usr/local/go/bin" >> $mnt/root/.bashrc
+# echo "PATH=\$PATH:/usr/local/go/bin" >> $mnt/root/.bashrc
+
+# Set Go environment variables
+echo "Setting environment variables..."
+buildah config --env PATH=/usr/local/go/bin:$PATH $container
+buildah config --env GOROOT=/usr/local/go $container
+buildah config --env GOPATH=/root/go $container
+buildah config --env PATH=/root/go/bin:/usr/local/go/bin:$PATH $container
+
+# (Optional) Create GOPATH directory
+mkdir -p $mnt/root/go
 
 # Commit the container to create the image with the provided image name
 buildah commit --format docker "$container" "$IMAGE_NAME"
